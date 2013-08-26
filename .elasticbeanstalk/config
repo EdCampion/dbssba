@@ -1,0 +1,15 @@
+[global]
+ApplicationName=edcampionsba
+AwsCredentialFile=C:\Users\Ed\.elasticbeanstalk\aws_credential_file
+DevToolsEndpoint=git.elasticbeanstalk.eu-west-1.amazonaws.com
+EnvironmentName=edcampionsba-env
+EnvironmentType=LoadBalanced
+InstanceProfileName=aws-elasticbeanstalk-ec2-role
+OptionSettingFile=C:\Users\Ed\workspace\edcampionsba\.elasticbeanstalk\optionsettings.edcampionsba-env
+RdsDeletionPolicy=Snapshot
+RdsEnabled=Yes
+RdsSourceSnapshotName=
+Region=eu-west-1
+ServiceEndpoint=https://elasticbeanstalk.eu-west-1.amazonaws.com
+SolutionStack=32bit Amazon Linux running Python
+
