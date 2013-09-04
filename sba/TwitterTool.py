@@ -1,0 +1,113 @@
+import sys
+import logging
+from sba.models import Tweet, SearchTerm, Region,Topic
+sys.path.append("tweepy/".encode("utf-8"))
+import tweepy
+logging.basicConfig(level=logging.DEBUG)
+modStrConKey = "m8gDPJLNhJevZusJQ7pxA"
+modStrConSec = "3CNxg3fi7GLFqAnKG9kMXBtwi8o4L7m4gEdcvA5Iw"
+modStrAccKey = "28868957-BB6Cn48MwWlqkIMBIWPe97XQZ7SzBjPuCUWxmK24"
+modStrAccSec = "96KjPEdIXiCtwS2SOr7U7UOQt3Slk2d5ZIdYxxdvRE"
+
+modAuth = tweepy.OAuthHandler(modStrConKey, modStrConSec)
+modAuth.set_access_token(modStrAccKey, modStrAccSec)
+modTwitterApi = tweepy.API(modAuth)
+
+
+
+class StreamListener(tweepy.StreamListener):
+    wex  = Region.objects.get(name = "Wexford")
+    count = 0
+    def on_status(self, tweet):
+        #print'Ran on_status'
+        #print tweet.text
+        #print tweet.coordinates
+        if(self.count < 100):
+            Tweet.create(tweet.text,self.wex)
+            self.count+=1
+        else:
+            return False
+        
+        
+
+    def on_error(self, status_code):
+        print( 'Error Test: ' + repr(status_code) )
+        return False
+
+    
+       
+        
+
+
+
+    
+def Run():
+    
+    l = StreamListener()
+    setTerms = []
+    
+   
+    
+    obtopic = Topic.objects.get(name = "Top Four")
+    qs = SearchTerm.objects.filter(topic = obtopic)
+    print "toodles" 
+    print len(qs.values())
+    for item in qs.values():
+        setTerms.append(item['term'])
+         
+          
+      
+    
+    
+        try:
+            streamer = tweepy.Stream(auth=modAuth, listener=l )
+            streamer.filter(track = setTerms)
+       
+              
+                 
+            #
+        except AttributeError:
+            print(sys.exc_info()[0])
+            streamer.disconnect()
+            logging.exception("Atts brokes!")
+    
+    
+# if __name__=="__main__":
+#     Run()
+# collect tweets given geocode and search terms
+# def CollectTweets(lstStrSearchTerms, strGeocode, intItems):
+#   lstOfLstsTweetValues = []
+#   lstOfIds = []
+#   InitTweetUtils()
+#   intLastId = GetValueFromDB("lastid")
+#   count = 0
+#   logging.info(lstStrSearchTerms)
+#   logging.info(intLastId)
+#   for result in tweepy.Cursor(modTwitterApi.search, q=lstStrSearchTerms, since_id=intLastId, geocode='%s,%s,%s' % (53.000, -8, '270km')).items(200):
+#     count = count + 1
+#     lstOfLstsTweetValues.append([result.text, result.__getstate__().get("location", "noLocat").encode("utf-8")])
+#     lstOfIds.append(result.id)
+#   logging.info("Count: %d" % (count))
+#   if sum(lstOfIds) > 0:
+#     WriteValueToDB([("lastid", max(lstOfIds))])
+#   logging.info(lstOfLstsTweetValues)
+#   return lstOfLstsTweetValues
+#
+# def InitTweetUtils():
+#   if modDbTweetUtilsManager.CheckHasEntities() == False:
+#      modDbTweetUtilsManager.InitTweetUtils([("lastid", 0)])
+#
+#   else:
+#     return
+#
+# def CollectTweets(strHashTag, intItems):
+#   for result in tweepy.Cursor(modTwitterApi.search, q=strHashTag, locale="Ireland"):
+#     logging.info(result.user)
+#
+# def GetValueFromDB(strKey):
+#   # Return value
+#   return modDbTweetUtilsManager.ReturnPropertyOfTweetUtils(strKey)
+#
+# def WriteValueToDB(lstUpdateValues):
+#   modDbTweetUtilsManager.UpdateTweetUtils(lstUpdateValues)
+
