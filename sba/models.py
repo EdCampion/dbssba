@@ -47,6 +47,7 @@ class RegionalOccurrence(models.Model):
 class Tweet(models.Model):
     
     text = models.CharField('actual tweet',max_length = 140)
+    reg = models.ForeignKey(Region)
     
     @classmethod
     def create(cls,text):
