@@ -3,3 +3,4 @@ South==0.8.2
 boto==2.10.0
 django-storages==1.1.8
 mysql-python==1.2.3
+tweepy==2.1
