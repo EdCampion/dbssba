@@ -24,7 +24,7 @@ class StreamListener(tweepy.StreamListener):
         #print tweet.text
         #print tweet.coordinates
         if(self.count < 100):
-            Tweet.create(tweet.text,self.wex.name)
+            Tweet.create(tweet.text,self.wex)
             self.count+=1
         else:
             return False

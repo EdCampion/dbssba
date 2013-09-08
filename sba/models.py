@@ -10,6 +10,7 @@ class Region(models.Model):
     def create(cls,name):
         region = cls(name = name)
         region.save()
+        return region
         
  
     #many to many between tweets and topics

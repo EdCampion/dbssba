@@ -2,7 +2,7 @@
 ApplicationName=edcampionsba
 AwsCredentialFile=C:\Users\Ed\.elasticbeanstalk\aws_credential_file
 DevToolsEndpoint=git.elasticbeanstalk.eu-west-1.amazonaws.com
-EnvironmentName=edsba-env
+EnvironmentName=edcampionsba-env
 EnvironmentType=LoadBalanced
 InstanceProfileName=aws-elasticbeanstalk-ec2-role
 OptionSettingFile=C:\Users\Ed\workspace\edcampionsba\.elasticbeanstalk\optionsettings.edcampionsba-env
