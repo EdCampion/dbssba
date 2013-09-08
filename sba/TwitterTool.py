@@ -16,7 +16,7 @@ modTwitterApi = tweepy.API(modAuth)
 
 
 class StreamListener(tweepy.StreamListener):
-    wex  = Region.objects.get(name = "Wexford")
+    wex  = Region.create("Wexford")
     count = 0
     def on_status(self, tweet):
         #print'Ran on_status'
