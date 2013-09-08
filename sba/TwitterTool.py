@@ -17,13 +17,14 @@ modTwitterApi = tweepy.API(modAuth)
 
 class StreamListener(tweepy.StreamListener):
     wex  = Region.create("Wexford")
+    
     count = 0
     def on_status(self, tweet):
         #print'Ran on_status'
         #print tweet.text
         #print tweet.coordinates
         if(self.count < 100):
-            Tweet.create(tweet.text,self.wex)
+            Tweet.create(tweet.text,self.wex.name)
             self.count+=1
         else:
             return False
