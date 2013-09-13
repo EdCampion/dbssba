@@ -8,11 +8,11 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-#Check for running on EC2
+# Check for running on EC2
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': os.environ['RDS_DB_NAME'],
             'USER': os.environ['RDS_USERNAME'],
             'PASSWORD': os.environ['RDS_PASSWORD'],
@@ -125,8 +125,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
      'storages',
-     'south',
-     'sba',
+      'south',
+      'sba',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

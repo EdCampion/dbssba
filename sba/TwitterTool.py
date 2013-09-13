@@ -1,6 +1,6 @@
 import sys
 import logging
-from sba.models import Tweet, SearchTerm, Region,Topic
+from sba.models import Tweet, SearchTerm, Region, Topic
 sys.path.append("tweepy/".encode("utf-8"))
 import tweepy
 logging.basicConfig(level=logging.DEBUG)
@@ -16,63 +16,66 @@ modTwitterApi = tweepy.API(modAuth)
 
 
 class StreamListener(tweepy.StreamListener):
-    wex  = Region.create("Wexford")
-    
+    wex = Region.create("Wexford")
+
     count = 0
     def on_status(self, tweet):
-        #print'Ran on_status'
-        #print tweet.text
-        #print tweet.coordinates
+        # print'Ran on_status'
+        # print tweet.text
+        # print tweet.coordinates
         if(self.count < 100):
-            Tweet.create(tweet.text,self.wex)
-            self.count+=1
+            Tweet.create(tweet.text, self.wex)
+            self.count += 1
         else:
             return False
-        
-        
+
+
+    def on_timeout(self):
+        print  'Timeout...'
+        return True  # Don't kill the stream
 
     def on_error(self, status_code):
-        print( 'Error Test: ' + repr(status_code) )
+        print('Error Test: ' + repr(status_code))
         return False
 
-    
-       
-        
 
 
 
-    
+
+
+
+
 def Run():
-    
+
     l = StreamListener()
     setTerms = []
-    
-   
-    
-    obtopic = Topic.objects.get(name = "Top Four")
-    qs = SearchTerm.objects.filter(topic = obtopic)
-    print "toodles" 
+
+
+
+    obtopic = Topic.objects.get(name="Top Four")
+    qs = SearchTerm.objects.filter(topic=obtopic)
+    print "toodles"
     print len(qs.values())
     for item in qs.values():
         setTerms.append(item['term'])
-         
-          
-      
-    
-    
+
+
+
+
+
         try:
-            streamer = tweepy.Stream(auth=modAuth, listener=l )
-            streamer.filter(track = setTerms)
-       
-              
-                 
+            streamer = tweepy.Stream(auth=modAuth, listener=l)
+            streamer.filter(track=setTerms)
+
+
+
             #
         except AttributeError:
             print(sys.exc_info()[0])
             streamer.disconnect()
             logging.exception("Atts brokes!")
-    
-    
+
+
 # if __name__=="__main__":
 #     Run()
 # collect tweets given geocode and search terms
