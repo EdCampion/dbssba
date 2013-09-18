@@ -24,9 +24,13 @@ class StreamListener(tweepy.StreamListener):
 
         if(self.count < 100):
 
-            if("RT @" not in tweet.text):  # remove retweets
-                Tweet.create(tweet.text, self.wex)  # store tweet
-                self.count += 1
+            try:
+                if("RT @" not in tweet.text):  # remove retweets
+                    Tweet.create(tweet.text, self.wex)  # store tweet
+                    self.count += 1
+
+            except:
+                pass
 
         else:
             return False
