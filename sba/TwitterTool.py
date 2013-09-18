@@ -12,7 +12,7 @@ modStrAccSec = "96KjPEdIXiCtwS2SOr7U7UOQt3Slk2d5ZIdYxxdvRE"
 modAuth = tweepy.OAuthHandler(modStrConKey, modStrConSec)
 modAuth.set_access_token(modStrAccKey, modStrAccSec)
 modTwitterApi = tweepy.API(modAuth)
-
+# modTwitterApi.
 
 
 class StreamListener(tweepy.StreamListener):
@@ -20,10 +20,10 @@ class StreamListener(tweepy.StreamListener):
 
     count = 0
     def on_status(self, tweet):
-        # print'Ran on_status'
-        # print tweet.text
-        # print tweet.coordinates
+
         if(self.count < 100):
+            # print unicode(tweet.text, "utf-8")
+            # print unicode(tweet.coordinates, "utf-8")
             Tweet.create(tweet.text, self.wex)
             self.count += 1
         else:
@@ -49,31 +49,18 @@ def Run():
 
     l = StreamListener()
     setTerms = []
-
-
-
     obtopic = Topic.objects.get(name="Top Four")
     qs = SearchTerm.objects.filter(topic=obtopic)
-    print "toodles"
-    print len(qs.values())
     for item in qs.values():
         setTerms.append(item['term'])
+    try:
+        streamer = tweepy.Stream(auth=modAuth, listener=l)
+        streamer.filter(track=setTerms)
 
-
-
-
-
-        try:
-            streamer = tweepy.Stream(auth=modAuth, listener=l)
-            streamer.filter(track=setTerms)
-
-
-
-            #
-        except AttributeError:
-            print(sys.exc_info()[0])
-            streamer.disconnect()
-            logging.exception("Atts brokes!")
+    except AttributeError:
+        print(sys.exc_info()[0])
+        streamer.disconnect()
+        logging.exception("Att Exc!")
 
 
 # if __name__=="__main__":
