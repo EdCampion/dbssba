@@ -19,13 +19,15 @@ class StreamListener(tweepy.StreamListener):
     wex = Region.create("Wexford")
 
     count = 0
+    strCleanedTweet = ""
     def on_status(self, tweet):
 
         if(self.count < 100):
-            # print unicode(tweet.text, "utf-8")
-            # print unicode(tweet.coordinates, "utf-8")
-            Tweet.create(tweet.text, self.wex)
-            self.count += 1
+
+            if("RT @" not in tweet.text):  # remove retweets
+                Tweet.create(tweet.text, self.wex)  # store tweet
+                self.count += 1
+
         else:
             return False
 
