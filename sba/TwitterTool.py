@@ -16,7 +16,12 @@ modTwitterApi = tweepy.API(modAuth)
 
 
 class StreamListener(tweepy.StreamListener):
-    wex = Region.create("Wexford")
+    num_results = Region.objects.filter(name="Wexford").count()
+
+    if(num_results == 0):
+        wex = Region.create("Wexford")
+    else:
+        wex = Region.objects.filter(name="Wexford")[0]
 
     count = 0
     strCleanedTweet = ""
